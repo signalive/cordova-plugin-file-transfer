@@ -726,6 +726,15 @@ public class FileTransfer extends CordovaPlugin {
                     OpenForReadResult readResult = null;
 
                     file = resourceApi.mapUriToFile(targetUri);
+
+                    // Retter https://github.com/apache/cordova-plugin-file-transfer/issues/330
+                    if (file == null) {
+                        file = new File(targetUri.getPath());
+                    }
+
+                    file.getParentFile().mkdirs();
+                    // Slutt retting #330
+
                     context.targetFile = file;
 
                     LOG.d(LOG_TAG, "Download file:" + sourceUri);
